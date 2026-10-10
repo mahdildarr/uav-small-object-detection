@@ -60,6 +60,33 @@ python src/eval_mot.py --weights runs/visdrone/yolo11s_1024/weights/best.pt \
 - **Tracking:** MOTA, IDF1, ID switches (IDSW)
 - **Speed:** Inference time per image (to quantify the cost of sliced inference)
 
+## Results
+
+### Zero-shot baseline on VisDrone2019-DET val
+
+Before any fine-tuning, a COCO-pretrained YOLO11s was evaluated on all 548 validation images, with standard inference at 1024 px and sliced inference (640 px tiles, 20% overlap). Because COCO and VisDrone use different class lists, both are mapped to three shared groups (person, vehicle, two-wheeler); tricycles have no COCO counterpart and are left out. A detection counts if it overlaps a ground-truth box of the same group with IoU of at least 0.5 (confidence threshold 0.25).
+
+| Method | Precision | Recall, small (<32²) | Recall, medium (32²–96²) | Recall, large (>96²) | Time / image (CPU) |
+|---|---|---|---|---|---|
+| Standard | 0.832 | 0.175 | 0.603 | 0.914 | 0.44 s |
+| Sliced (SAHI) | 0.764 | 0.231 | 0.662 | 0.917 | 1.65 s |
+
+Ground-truth objects: 25,660 small, 10,471 medium, 1,051 large.
+
+<p align="center"><img src="docs/assets/recall_by_size.png" width="70%" alt="Recall by object size"></p>
+
+Most objects in VisDrone are small, and this is where the pretrained model struggles most: it finds fewer than one in five of them. Slicing raises small-object recall from 0.175 to 0.231 (about 32% more objects found) and medium-object recall from 0.603 to 0.662, at the cost of lower precision and roughly four times the inference time. Even with slicing, more than three quarters of the small objects are missed, which is the motivation for fine-tuning on VisDrone at high resolution.
+
+<p align="center"><img src="docs/assets/visdrone_val_example.jpg" width="100%" alt="Example"></p>
+<p align="center"><sub>Validation image, standard (left) vs sliced (right) inference. Thin boxes: predictions; red boxes: objects that were missed.</sub></p>
+
+The numbers can be reproduced with:
+
+```bash
+python src/evaluate_small_objects.py --weights yolo11s.pt --images datasets/VisDrone/images/val \
+    --limit 0 --coco-zero-shot --save-vis 6
+```
+
 ## Progress
 
 - [x] Fine-tuning script for VisDrone-DET at high resolution
@@ -68,11 +95,12 @@ python src/eval_mot.py --weights runs/visdrone/yolo11s_1024/weights/best.pt \
 - [x] MOTA / IDF1 evaluation on VisDrone-MOT sequences
 - [x] Colab notebook for training and evaluation
 - [x] First qualitative comparison of standard vs sliced inference
+- [x] Zero-shot standard vs sliced comparison on the full VisDrone validation set
 
 Next:
 
 - [ ] Baseline training on VisDrone-DET
-- [ ] Quantitative standard vs sliced comparison
+- [ ] Standard vs sliced comparison after fine-tuning
 - [ ] Tracking evaluation on VisDrone-MOT
 
 ## Project structure

@@ -18,6 +18,18 @@ from ultralytics import YOLO
 
 from utils import label_path_for, load_yolo_labels, match_detections
 
+# Shared groups for the zero-shot baseline: 0 person, 1 vehicle, 2 two-wheeler (-1 = dropped).
+VISDRONE_TO_GROUP = {0: 0, 1: 0, 2: 2, 3: 1, 4: 1, 5: 1, 6: -1, 7: -1, 8: 1, 9: 2}
+COCO_TO_GROUP = {0: 0, 1: 2, 2: 1, 3: 2, 5: 1, 7: 1}
+
+
+def to_groups(cls, boxes, mapping, conf=None):
+    g = np.array([mapping.get(int(c), -1) for c in cls], dtype=int)
+    keep = g >= 0
+    out = (g[keep], boxes[keep]) if conf is None else (boxes[keep], g[keep], conf[keep])
+    return out
+
+
 SIZE_BINS = [("Small (<32²)", 0, 32**2), ("Medium (32²–96²)", 32**2, 96**2), ("Large (>96²)", 96**2, float("inf"))]
 
 
@@ -33,6 +45,9 @@ def parse_args():
     p.add_argument("--overlap", type=float, default=0.2, help="SAHI slice overlap ratio")
     p.add_argument("--no-sahi", action="store_true", help="Evaluate standard inference only")
     p.add_argument("--save-vis", type=int, default=0, help="Number of side-by-side visualizations to save")
+    p.add_argument("--coco-zero-shot", action="store_true",
+                   help="Evaluate a COCO-pretrained model before fine-tuning: COCO and VisDrone classes are mapped to "
+                        "shared groups (person, vehicle, two-wheeler); tricycles have no COCO counterpart and are dropped")
     p.add_argument("--out", default="runs/eval")
     return p.parse_args()
 
@@ -156,14 +171,20 @@ def main():
         img = cv2.imread(img_path)
         h, w = img.shape[:2]
         gt_cls, gt_boxes = load_yolo_labels(label_path_for(img_path), w, h)
+        if a.coco_zero_shot:
+            gt_cls, gt_boxes = to_groups(gt_cls, gt_boxes, VISDRONE_TO_GROUP)
 
         t0 = time.perf_counter()
         std = standard_predict(model, img_path, a.imgsz, a.conf)
+        if a.coco_zero_shot:
+            std = to_groups(std[1], std[0], COCO_TO_GROUP, std[2])
         m_std = update(results["Standard"], gt_boxes, gt_cls, std, a.iou, time.perf_counter() - t0)
 
         if sahi_model is not None:
             t0 = time.perf_counter()
             sl = sliced_predict(sahi_model, img_path, a.slice, a.overlap)
+            if a.coco_zero_shot:
+                sl = to_groups(sl[1], sl[0], COCO_TO_GROUP, sl[2])
             m_sl = update(results["Sliced (SAHI)"], gt_boxes, gt_cls, sl, a.iou, time.perf_counter() - t0)
 
         if idx < a.save_vis:
