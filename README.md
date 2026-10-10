@@ -5,8 +5,6 @@ Detection of **small objects** such as vehicles and pedestrians in drone-capture
 <p align="center"><img src="docs/assets/sliced_vs_standard.jpg" width="100%" alt="Example"></p>
 <p align="center"><sub>Same model, same image, same confidence threshold (0.25): COCO-pretrained YOLO11s before fine-tuning on VisDrone. Sliced inference recovers many of the distant vehicles that standard inference misses. Image: SAHI demo data.</sub></p>
 
-> **Status:** Work in progress. Result tables will be added as experiments are completed.
-
 ## Problem
 
 In UAV payload cameras, targets occupy only a tiny fraction of the image. Most objects in the VisDrone dataset are smaller than 32×32 pixels. Standard object detectors tend to miss objects at this scale and fail to keep consistent identities across video frames.
@@ -22,7 +20,6 @@ In UAV payload cameras, targets occupy only a tiny fraction of the image. Most o
 | 3. Size-aware analysis | Separate recall for small / medium / large objects | `src/evaluate_small_objects.py` |
 | 4. Tracking | Associate detections across frames with ByteTrack | `src/track.py` |
 | 5. Tracking evaluation | MOTA and IDF1 on VisDrone-MOT | `src/eval_mot.py` |
-
 
 ## Data
 
@@ -62,17 +59,6 @@ python src/eval_mot.py --weights runs/visdrone/yolo11s_1024/weights/best.pt \
 - **Detection:** mAP@0.5, mAP@0.5:0.95; recall for small / medium / large objects
 - **Tracking:** MOTA, IDF1, ID switches (IDSW)
 - **Speed:** Inference time per image (to quantify the cost of sliced inference)
-
-## Results
-
-| Experiment | mAP@0.5 | mAP@0.5:0.95 | Small-object recall |
-|---|---|---|---|
-| YOLO11s · 1024 px · standard | _TBD_ | _TBD_ | _TBD_ |
-| YOLO11s · 1024 px · sliced (SAHI) | – | – | _TBD_ |
-
-| Tracking | MOTA | IDF1 | IDSW |
-|---|---|---|---|
-| YOLO11s + ByteTrack | _TBD_ | _TBD_ | _TBD_ |
 
 ## Roadmap
 
