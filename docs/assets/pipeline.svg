@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="338" viewBox="0 0 960 338" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c8962e"/></marker></defs>
+<rect width="960" height="338" rx="14" fill="#ffffff"/>
+<text x="32" y="38" font-size="18" font-weight="700" fill="#1d2733">Small object detection and tracking in UAV imagery</text>
+<text x="32" y="60" font-size="12.5" fill="#5b6775">Tiny targets in aerial images: fine-tuned YOLO, sliced inference and multi-object tracking</text>
+<g transform="translate(32.0,86)">
+<rect width="198.5" height="228" rx="10" fill="#eef3f8" stroke="#c9d3dd"/>
+<text x="14" y="26" font-size="11" font-weight="700" fill="#2c5578" letter-spacing=".6">1 · DATA</text>
+<text x="14" y="54" font-size="12.5" font-weight="700" fill="#1d2733">VisDrone2019-DET</text>
+<text x="14" y="70" font-size="11" fill="#5b6775">10 classes, aerial images</text>
+<text x="14" y="96" font-size="12.5" font-weight="700" fill="#1d2733">Most objects &lt; 32×32 px</text>
+<text x="14" y="112" font-size="11" fill="#5b6775">pedestrians, cars, bikes</text>
+<text x="14" y="138" font-size="12.5" font-weight="700" fill="#1d2733">VisDrone2019-MOT</text>
+<text x="14" y="154" font-size="11" fill="#5b6775">video sequences</text>
+</g>
+<line x1="234.5" y1="200" x2="260.5" y2="200" stroke="#c8962e" stroke-width="2.2" marker-end="url(#a)"/>
+<g transform="translate(264.5,86)">
+<rect width="198.5" height="228" rx="10" fill="#eef3f8" stroke="#c9d3dd"/>
+<text x="14" y="26" font-size="11" font-weight="700" fill="#2c5578" letter-spacing=".6">2 · INFERENCE</text>
+<text x="14" y="54" font-size="12.5" font-weight="700" fill="#1d2733">Standard</text>
+<text x="14" y="70" font-size="11" fill="#5b6775">full image at 1024 px</text>
+<text x="14" y="96" font-size="12.5" font-weight="700" fill="#1d2733">Sliced (SAHI)</text>
+<text x="14" y="112" font-size="11" fill="#5b6775">overlapping tiles,</text>
+<text x="14" y="127" font-size="11" fill="#5b6775">merged predictions</text>
+<text x="14" y="153" font-size="12.5" font-weight="700" fill="#1d2733">Size-aware analysis</text>
+<text x="14" y="169" font-size="11" fill="#5b6775">small / medium / large</text>
+</g>
+<line x1="467.0" y1="200" x2="493.0" y2="200" stroke="#c8962e" stroke-width="2.2" marker-end="url(#a)"/>
+<g transform="translate(497.0,86)">
+<rect width="198.5" height="228" rx="10" fill="#2c5578"/>
+<text x="14" y="26" font-size="11" font-weight="700" fill="#f0d79e" letter-spacing=".6">3 · MODELS</text>
+<text x="14" y="54" font-size="12.5" font-weight="700" fill="#ffffff">YOLO11, fine-tuned</text>
+<text x="14" y="70" font-size="11" fill="#d7e3ee">COCO-pretrained, 1024 px</text>
+<text x="14" y="96" font-size="12.5" font-weight="700" fill="#ffffff">ByteTrack</text>
+<text x="14" y="112" font-size="11" fill="#d7e3ee">associates detections</text>
+<text x="14" y="127" font-size="11" fill="#d7e3ee">across frames</text>
+<text x="14" y="153" font-size="12.5" font-weight="700" fill="#ffffff">Track IDs</text>
+<text x="14" y="169" font-size="11" fill="#d7e3ee">consistent over time</text>
+</g>
+<line x1="699.5" y1="200" x2="725.5" y2="200" stroke="#c8962e" stroke-width="2.2" marker-end="url(#a)"/>
+<g transform="translate(729.5,86)">
+<rect width="198.5" height="228" rx="10" fill="#eef3f8" stroke="#c9d3dd"/>
+<text x="14" y="26" font-size="11" font-weight="700" fill="#2c5578" letter-spacing=".6">4 · EVALUATION</text>
+<text x="14" y="54" font-size="12.5" font-weight="700" fill="#1d2733">Detection</text>
+<text x="14" y="70" font-size="11" fill="#5b6775">mAP@0.5, mAP@0.5:0.95</text>
+<text x="14" y="96" font-size="12.5" font-weight="700" fill="#1d2733">Small-object recall</text>
+<text x="14" y="112" font-size="11" fill="#5b6775">standard vs sliced</text>
+<text x="14" y="138" font-size="12.5" font-weight="700" fill="#1d2733">Tracking</text>
+<text x="14" y="154" font-size="11" fill="#5b6775">MOTA, IDF1, ID switches</text>
+<text x="14" y="180" font-size="12.5" font-weight="700" fill="#1d2733">Cost</text>
+<text x="14" y="196" font-size="11" fill="#5b6775">time per image</text>
+</g>
+</svg>
