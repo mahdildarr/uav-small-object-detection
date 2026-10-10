@@ -60,12 +60,19 @@ python src/eval_mot.py --weights runs/visdrone/yolo11s_1024/weights/best.pt \
 - **Tracking:** MOTA, IDF1, ID switches (IDSW)
 - **Speed:** Inference time per image (to quantify the cost of sliced inference)
 
-## Roadmap
+## Progress
 
-- [x] Training, evaluation and tracking pipeline
+- [x] Fine-tuning script for VisDrone-DET at high resolution
+- [x] Standard vs sliced (SAHI) inference with size-aware recall
+- [x] Multi-object tracking with ByteTrack
+- [x] MOTA / IDF1 evaluation on VisDrone-MOT sequences
+- [x] Colab notebook for training and evaluation
+- [x] First qualitative comparison of standard vs sliced inference
+
+Next:
+
 - [ ] Baseline training on VisDrone-DET
-- [ ] Standard vs. sliced inference comparison
-- [ ] Comparison of input resolution and augmentation strategies
+- [ ] Quantitative standard vs sliced comparison
 - [ ] Tracking evaluation on VisDrone-MOT
 
 ## Project structure
