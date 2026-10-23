@@ -1,0 +1,18 @@
+# Slicing-aided fine-tuning (SAHI paper, Akyon et al. 2022): train on 640 px tiles cut from the
+# full-resolution images so that the training object scale matches sliced inference.
+# Create the tiled dataset first:
+#   python -m uavdet.slice_dataset --data VisDrone.yaml --out datasets/VisDrone-sliced --slice 640 --overlap 0.2
+train:
+  model: yolo11s.pt
+  data: datasets/VisDrone-sliced/data.yaml
+  epochs: 30
+  imgsz: 640
+  batch: 16
+  patience: 15
+  close_mosaic: 5
+  seed: 0
+  deterministic: true
+  project: runs/visdrone
+  name: yolo11s_sliced640
+  exist_ok: true
+  plots: true

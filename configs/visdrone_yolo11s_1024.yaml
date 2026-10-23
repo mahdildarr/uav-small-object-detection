@@ -1,0 +1,18 @@
+# YOLO11s fine-tuned on VisDrone2019-DET at high resolution.
+# Every key under `train` is passed to ultralytics YOLO.train().
+train:
+  model: yolo11s.pt          # COCO-pretrained initialisation
+  data: VisDrone.yaml        # downloaded and converted by Ultralytics on first use
+  epochs: 50
+  imgsz: 1024                # most VisDrone objects are < 32 px; resolution matters more than model size
+  batch: 8                   # fits a 16 GB T4 at 1024 px
+  patience: 20
+  close_mosaic: 10           # last epochs without mosaic, at the real object scale
+  scale: 0.5
+  fliplr: 0.5
+  seed: 0
+  deterministic: true
+  project: runs/visdrone
+  name: yolo11s_1024
+  exist_ok: true
+  plots: true

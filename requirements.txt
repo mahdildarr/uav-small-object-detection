@@ -5,3 +5,9 @@ numpy
 scipy
 pandas
 matplotlib
+pyyaml
+pycocotools
+motmetrics>=1.4
+lap
+pytest
+ruff
